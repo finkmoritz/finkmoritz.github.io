@@ -53,6 +53,7 @@ a:focus {
     padding: 10px 0;
     height: auto;
     border: 0px;
+    border-bottom: #000000 5px solid;
 }
 .navbar-brand img {
     height: 30px;
@@ -300,9 +301,6 @@ a.goto-btn { margin-right: 30px ; border: #fff 1px solid; padding: 12px 18px; co
     background-color: #000000;
     color: #fff;
 }
-#whatIdo h5 {
-    color: #fff !important;
-}
 .section-header {
     padding: 40px 0;
     text-align: center;
@@ -380,7 +378,7 @@ h4.media-heading {
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #FFF;
 }
-/* About */
+/* About Me */
 #about {
     background: #00006B;
     color:#fff;

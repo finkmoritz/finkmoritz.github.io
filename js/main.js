@@ -1,9 +1,3 @@
-// Hello.
-//
-// This is The Scripts used for ___________ Theme
-//
-//
-
 function main() {
 
 (function () {
@@ -129,26 +123,33 @@ function main() {
 
     $(document).ready(function() {
  
-  $("#owl-demo").owlCarousel({
- 
-      navigation : false, // Show next and prev buttons
-      slideSpeed : 300,
-      paginationSpeed : 400,
-      singleItem:true
- 
-      // "singleItem:true" is a shortcut for:
-      // items : 1, 
-      // itemsDesktop : false,
-      // itemsDesktopSmall : false,
-      // itemsTablet: false,
-      // itemsMobile : false
- 
-  });
- 
-});
+      $("#owl-demo").owlCarousel({
 
- 
+          navigation : false, // Show next and prev buttons
+          slideSpeed : 300,
+          paginationSpeed : 400,
+          singleItem:true
 
+          // "singleItem:true" is a shortcut for:
+          // items : 1,
+          // itemsDesktop : false,
+          // itemsDesktopSmall : false,
+          // itemsTablet: false,
+          // itemsMobile : false
+
+      });
+
+    });
+
+    /*====================================
+    Insert my age
+    ======================================*/
+    $(document).ready(function() {
+        const ageDifMs = Date.now() - Date.UTC(1992, 5, 30);
+        const ageDate = new Date(ageDifMs); // miliseconds from epoch
+        const myAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+        $("#myAge").html(myAge);
+    });
 
 }());
 
