@@ -1141,6 +1141,9 @@ ul.list-inline.bullet-lists li {
     transition: all 0.3s;
 }
 ul.list-inline.bullet-lists li:hover { background: #00008F }
+.list-inline>li {
+    margin-bottom: 30px;
+}
 /* Single Blog Post */
 .blog-post .post-wrap img,
 .work-detail img.featured { margin: 20px 0 }
