@@ -88,7 +88,6 @@
 	.meta-detail { display: none; }
     h1 { font-size: 34px;}
     #home.slider h1 { font-size: 26px;}
-    p.lead { display: none;}
     .slider .carousel-indicators { bottom: 0px; }
     .ipad-wrapper .app-wrap {left: 3%;}
 }
