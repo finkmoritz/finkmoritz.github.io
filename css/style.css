@@ -301,6 +301,9 @@ a.goto-btn { margin-right: 30px ; border: #fff 1px solid; padding: 12px 18px; co
     background-color: #000000;
     color: #fff;
 }
+#whatIdo .margin-bottom {
+    margin-bottom: 20px;
+}
 .section-header {
     padding: 40px 0;
     text-align: center;
