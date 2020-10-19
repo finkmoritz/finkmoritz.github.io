@@ -809,6 +809,7 @@ ul.cat li a.active {
 #experience > section-header > h2, #experience > section-header > h5 {
     color: #fff !important;
 }
+#experience a:hover {color: #fff;}
 .experience i.fa {
     text-align: center;
     font-size: 30px;
