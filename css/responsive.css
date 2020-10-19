@@ -1,3 +1,10 @@
+/* macBook Pro Retina Display */
+@media (max-width: 3072px) {
+    #home {background-image: url(../img/background/background_w3300.jpg);}
+}
+@media (max-width: 1600px) {
+    #home {background-image: url(../img/background/background_w1920.jpg);}
+}
 /* iPads (portrait and landscape) ----------- */
 @media (max-width: 768px) {
 	body{ overflow-x: hidden;}
@@ -55,6 +62,7 @@
 	}
 	.content-heading{ margin-top: 80px;}
 	.ipad-wrapper .app-wrap {left: 22%;}
+    #home {background-image: url(../img/background/background_w1028.jpg);}
 	#home.app .content-heading.text-left{text-align: center;}
 	#itemsWorkTwo .box .hover-text i.fa {
 	    top: 0%;
@@ -87,6 +95,7 @@
 	}
 	.meta-detail { display: none; }
     h1 { font-size: 34px;}
+    #home {background-image: url(../img/background/background_w800.jpg);}
     #home.slider h1 { font-size: 26px;}
     .slider .carousel-indicators { bottom: 0px; }
     .ipad-wrapper .app-wrap {left: 3%;}
