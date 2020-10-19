@@ -125,6 +125,7 @@
 	    margin: 20px;
 	}
 	h1 {font-size: 26px}
+    #home {background-image: url(../img/background/background_w460.jpg);}
 	#home.slider{ display: none;}
 	#intro.slider{ margin-top: 70px !important}
 	.ipad-wrapper .app-wrap {display: none;}
