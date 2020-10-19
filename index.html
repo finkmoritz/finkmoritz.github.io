@@ -121,7 +121,12 @@
             <div class="row"> <!-- row -->
                 
                 <div class="col-md-6 text-right">  <!-- Left Content Col 6 -->
-                    <img src="img/whatido/what-i-do.jpg" class="intro-logo img-responsive" alt="free-template">
+                    <picture>
+                        <source media="(min-width: 1600px)" srcset="img/whatido/what-i-do.jpg">
+                        <source media="(min-width: 900px)" srcset="img/whatido/what-i-do_w1280.jpg">
+                        <source media="(min-width: 480px)" srcset="img/whatido/what-i-do_w600.jpg">
+                        <img src="img/whatido/what-i-do.jpg" class="intro-logo img-responsive" alt="Coding">
+                    </picture>
                 </div> <!-- End Left Content Col 6 -->
 
                 <div class="col-md-6"> <!-- Right Content Col 6 -->
