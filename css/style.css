@@ -423,6 +423,11 @@ h4.media-heading {
 
 
 #about { padding: 40px 0 }
+#about code {
+    color: #fff;
+    background-color: #000000;
+    font-size: 75%;
+}
 .gray-bg {}
 .img-wrap .profile-img {
     position: relative;
