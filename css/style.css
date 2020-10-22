@@ -649,42 +649,35 @@ ul.cat li a.active {
     background: #00006B;
     padding: 8px;
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
+    top: 40%;
+    margin: auto;
+    display: inline-block;
     border-radius: 0;
     width: 45px;
     height: 45px;
-    -webkit-transform: translateX(-400%) translateY(0%);
-    transform: translateX(-400%)  translateY(0%);
-    opacity: 0;
     transition: all 0.5s;
 }
-.box:hover .hover-text .icon-wrapper {
-    -webkit-transform: translateX(0%) translateY(0%);
-    transform: translateX(0%)  translateY(0%);
-    opacity: 1;
-}
 .box .hover-text .icon-wrapper:hover { background: #333333 }
-.box .hover-text .icon-wrapper-expand {
+.box .hover-text .icon-wrapper.icon-wrapper-expand {
     border-top-right-radius: 0;
     -webkit-transform: translateX(-400%) translateY(0%);
     transform: translateX(-400%)  translateY(0%);
     opacity: 0;
     transition: all 0.5s;
 }
-.box:hover .hover-text .icon-wrapper-expand {
+.box:hover .hover-text .icon-wrapper.icon-wrapper-expand {
     -webkit-transform: translateX(0%) translateY(0%);
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
 }
-.box .hover-text .icon-wrapper-link {
+.box .hover-text .icon-wrapper.icon-wrapper-link {
     border-top-left-radius: 0;
-    -webkit-transform: translateX(-400%) translateY(0%);
-    transform: translateX(-400%)  translateY(0%);
+    -webkit-transform: translateX(400%) translateY(0%);
+    transform: translateX(400%)  translateY(0%);
     opacity: 0;
     transition: all 0.5s;
 }
-.box:hover .hover-text .icon-wrapper-link {
+.box:hover .hover-text .icon-wrapper.icon-wrapper-link {
     -webkit-transform: translateX(0%) translateY(0%);
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
@@ -766,7 +759,6 @@ ul.cat li a.active {
     letter-spacing: 2px;
     color: #333;
     text-transform: uppercase;
-    letter-spacing: 2px;
     padding: 10px 35px;
     border-radius: 2px;
 }
