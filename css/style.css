@@ -142,13 +142,10 @@ a.goto-btn:hover {
     border-bottom: 2px solid #00006B;
 }
 /* Home Section Style 2 - With Video*/
-#home.video .overlay {
-    padding: 0;
-    padding-top: 10%;
-}
+#home.video .overlay { padding: 10% 0 0; }
 .img-wrapper { position: relative }
 .img-wrapper img.img-responsive { margin: 0 auto !important }
-.img-wrapper i.fa {
+.img-wrapper .icon-wrapper {
     position: absolute;
     z-index: 10;
     top: 50%;
@@ -163,7 +160,7 @@ a.goto-btn:hover {
     margin-left: -30px;
     transition: all 0.3s;
 }
-.img-wrapper i.fa:hover { background: #00008F }
+.img-wrapper .icon-wrapper:hover { background: #00008F }
 .img-home {
     max-width: 100px;
     max-height: 100px;
@@ -339,36 +336,32 @@ a.goto-btn { margin-right: 30px ; border: #fff 1px solid; padding: 12px 18px; co
 }
 /* service lists */
 .service { margin-bottom: 20px }
-.service .media-right i.fa {
+.service .media-right .icon-wrapper {
     text-align: center;
     font-size: 30px;
     background-color: #333333;
     color: #ffffff;
-    padding: 25px 0;
+    padding: 18px 0;
     border-radius: 0;
-    border-top-left-radius: 0;
-    margin: 0 10px;
-    margin-right: 20px;
+    margin: 0 20px 0 10px;
     width: 82px;
     height: 80px;
     transition: background-color 0.5s;
 }
-.service .media-left i.fa {
+.service .media-left .icon-wrapper {
     text-align: center;
     font-size: 30px;
     background-color: #333333;
     color: #ffffff;
-    padding: 25px 0;
+    padding: 18px 0;
     border-radius: 0;
-    border-top-right-radius: 0;
-    margin: 0 10px;
-    margin-left: 20px;
+    margin: 0 10px 0 20px;
     width: 82px;
     height: 80px;
     transition: background-color 0.5s;
 }
-.experience:hover i.fa,
-.service:hover i.fa { background-color: #333333 }
+.experience:hover .icon-wrapper,
+.service:hover .icon-wrapper { background-color: #333333 }
 h4.media-heading {
     margin-top: 0;
     margin-bottom: 5px;
@@ -512,12 +505,12 @@ ul.social li a.fa:hover { background-color: #333333 }
 }
 
 .count-box:hover,
-.count-box:hover > i.fa { color: #ffffff }
+.count-box:hover > .icon-wrapper { color: #ffffff }
 .count-box:hover {
     -webkit-backface-visibility: hidden;
     background-color: #58BDEF;
 }
-.counter i.fa {
+.counter .icon-wrapper {
     font-size: 40px;
     color: #FFFFFF;
 }
@@ -651,38 +644,47 @@ ul.cat li a.active {
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
 }
-.box .hover-text i.fa {
+.box .hover-text .icon-wrapper {
     font-size: 20px;
     background: #00006B;
-    padding: 13px;
+    padding: 8px;
     position: relative;
-    top: 40%;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 0;
     width: 45px;
     height: 45px;
+    -webkit-transform: translateX(-400%) translateY(0%);
+    transform: translateX(-400%)  translateY(0%);
+    opacity: 0;
     transition: all 0.5s;
 }
-.box .hover-text i.fa:hover { background: #333333 }
-.box .hover-text i.fa.fa-expand {
+.box:hover .hover-text .icon-wrapper {
+    -webkit-transform: translateX(0%) translateY(0%);
+    transform: translateX(0%)  translateY(0%);
+    opacity: 1;
+}
+.box .hover-text .icon-wrapper:hover { background: #333333 }
+.box .hover-text .icon-wrapper-expand {
     border-top-right-radius: 0;
     -webkit-transform: translateX(-400%) translateY(0%);
     transform: translateX(-400%)  translateY(0%);
     opacity: 0;
     transition: all 0.5s;
 }
-.box:hover .hover-text i.fa.fa-expand {
+.box:hover .hover-text .icon-wrapper-expand {
     -webkit-transform: translateX(0%) translateY(0%);
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
 }
-.box .hover-text i.fa.fa-chain {
+.box .hover-text .icon-wrapper-link {
     border-top-left-radius: 0;
-    -webkit-transform: translateX(400%) translateY(0%);
-    transform: translateX(400%)  translateY(0%);
+    -webkit-transform: translateX(-400%) translateY(0%);
+    transform: translateX(-400%)  translateY(0%);
     opacity: 0;
     transition: all 0.5s;
 }
-.box:hover .hover-text i.fa.fa-chain {
+.box:hover .hover-text .icon-wrapper-link {
     -webkit-transform: translateX(0%) translateY(0%);
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
@@ -713,7 +715,7 @@ ul.cat li a.active {
     transform: translateX(0%)  translateY(0%);
     opacity: 1;
 }
-#itemsWorkTwo .box .hover-text i.fa {
+#itemsWorkTwo .box .hover-text .icon-wrapper {
     font-size: 20px;
     background: transparent;
     padding: 13px;
@@ -725,7 +727,7 @@ ul.cat li a.active {
     transition: all 0.5s;
     border: 1px solid #ffffff;
 }
-#itemsWorkTwo .box .hover-text i.fa:hover { background: #333333 }
+#itemsWorkTwo .box .hover-text .icon-wrapper:hover { background: #333333 }
 /* Portfolio Style #3 */
 #itemsWorkThree .box h5 {
     border: 1px solid #ddd;
@@ -815,15 +817,14 @@ ul.cat li a.active {
     color: #fff !important;
 }
 #experience a:hover {color: #fff;}
-.experience i.fa {
+.experience .icon-wrapper {
     text-align: center;
     font-size: 30px;
     background-color: #333;
     color: #ffffff;
-    padding: 25px 0;
+    padding: 18px 0;
     border-top-left-radius: 0;
-    margin: 0 10px;
-    margin-right: 20px;
+    margin: 0 20px 0 10px;
     width: 92px;
     height: 90px;
     transition: background-color 0.5s;
@@ -883,7 +884,6 @@ ul.cat li a.active {
 .btn.focus,
 .btn:active.focus,
 .btn.active.focus {
-    outline: 0;
     outline: 0;
     outline-offset: 0;
 }
@@ -975,21 +975,19 @@ ul.metas li a { color: #00006B }
     text-align: center;
     margin: 0px 0;
 }
-.contact-detail i.fa {
+.contact-detail .icon-wrapper {
     text-align: center;
     font-size: 30px;
     background-color: #333;
     color: #FFFFFF;
-    padding: 25px 0;
+    padding: 18px 0 ;
     border-radius: 0;
-    border-top-left-radius: 0;
-    margin: 0 10px;
-    margin-right: 20px;
+    margin: 0 auto 0 auto;
     width: 82px;
     height: 80px;
     transition: background-color 0.5s;
 }
-.contact-detail:hover i.fa { background-color: #333333 }
+.contact-detail:hover .icon-wrapper { background-color: #333333 }
 form#contact-form { padding: 40px 0 }
 .contact form#contact-form {padding: 0}
 .form-control:focus {

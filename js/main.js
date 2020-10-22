@@ -9,7 +9,7 @@ function main() {
     $(function() {
       $('a.scroll').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-          var target = $(this.hash);
+          let target = $(this.hash);
           target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
           if (target.length) {
             $('html,body').animate({
@@ -25,13 +25,13 @@ function main() {
     Script for the Counters for Facts Section
     ======================================*/
     $('.count').each(function() {
-        var $this = $(this);
+        const $this = $(this);
         $this.data('target', parseInt($this.html()));
         $this.data('counted', false);
         $this.html('0');
     });
     $(window).bind('scroll', function() {
-        var speed = 3000;
+        const speed = 3000;
         $('.count').each(function() {
             var $this = $(this);
             if (!$this.data('counted') && $(window).scrollTop() +
@@ -65,8 +65,8 @@ function main() {
     Portfolio Carousel 
     ======================================*/
   	$(document).ready(function() {
-  	  var owl = $("#team");
-  	  owl.owlCarousel({
+        const owl = $("#team");
+        owl.owlCarousel({
   	     
   	      itemsCustom : [
   	        [0, 1],
@@ -86,7 +86,7 @@ function main() {
     Portfolio Isotope Filter
     ======================================*/
     $(window).load(function() {
-        var $container = $('#itemsWork , #itemsWorkTwo, #itemsWorkThree');
+        const $container = $('#itemsWork , #itemsWorkTwo, #itemsWorkThree');
         $container.isotope({
             filter: '* , all',
             animationOptions: {
@@ -98,7 +98,7 @@ function main() {
         $('.cat a').click(function() {
             $('.cat .active').removeClass('active');
             $(this).addClass('active');
-            var selector = $(this).attr('data-filter');
+            const selector = $(this).attr('data-filter');
             $container.isotope({
                 filter: selector,
                 animationOptions: {
