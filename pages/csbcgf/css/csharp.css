@@ -1,0 +1,5 @@
+pre.cscode {overflow:auto; background-color:#222222; text-align:left;}
+.cscode code {font-family: Consolas, "Courier New", Courier, Monospace, serif; color:#ffffff;}
+.cscode .key {color:#8888ff;}
+.cscode .com {color:#448444;}
+.cscode .str {color:#d38585;}
