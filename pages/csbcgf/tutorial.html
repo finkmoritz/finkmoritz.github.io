@@ -97,8 +97,11 @@
                 <a href="#setup">1. Setup</a><br>
                 <a href="#framework">2. Framework</a><br>
                 <small><a href="#gamestructure">2.1 Game Structure</a></small><br>
-                <small><a href="#cards">2.2 Cards & Components</a></small><br>
-                <small><a href="#actions">2.3 Actions & Event Handling</a></small><br>
+                <small><a href="#cards">2.2 Cards</a></small><br>
+                <small><a href="#decks">2.3 Card Collections</a></small><br>
+                <small><a href="#players">2.4 Players</a></small><br>
+                <small><a href="#game">2.5 Game</a></small><br>
+                <small><a href="#mechanics">2.6 Mechanics</a></small><br>
                 <a href="#customobjects">3. Custom Objects</a><br>
                 <a href="#faq">4. FAQ</a><br>
             </p>
@@ -199,7 +202,7 @@ Console.WriteLine(<span class="str">"Mana pool stat of player 1 = "</span> + myP
                 start of each turn and the value counts how much of it is still left.
             </p>
 
-            <h3 id="cards">2.2 Cards & Components</h3>
+            <h3 id="cards">2.2 Cards</h3>
             <p>
                 The most important ingredients of each battle card game naturally are the cards. Those can be
                 categorized into two different kinds: monster cards & spell cards.
@@ -232,8 +235,139 @@ Console.WriteLine(<span class="str">"Mana pool stat of player 1 = "</span> + myP
 );</code></pre>
             <!-- ########## C# code snippet END ########## -->
 
-            <h3 id="actions">2.3 Actions & Event Handling</h3>
             <p></p>
+
+            <h3 id="decks">2.3 Card Collections</h3>
+            <p>
+                Card Collections provide a convenient way to hold multiple cards in one place. There are three
+                different types:
+            </p>
+            <ul>
+                <li style="list-style-type: none"><b>Hand:</b> Represents a player's hand</li>
+                <li style="list-style-type: none"><b>Deck:</b> Represents a player's deck</li>
+                <li style="list-style-type: none"><b>Board:</b> Represents a player's board with slots for monster cards</li>
+            </ul>
+            <p>
+                Before starting a game the player's deck should be set up in the following way:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>IDeck deck = <span class="key">new</span> Deck();
+
+<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt; 20; ++i)
+{
+    IMonsterCard myMonsterCard = <span class="key">new</span> MonsterCard(mana: 1, attack: 1, life: 1);
+    deck.Push(myMonsterCard);
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
+            <h3 id="players">2.4 Players</h3>
+            <p>
+                Players must be initialized with the deck that we previously setup:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>List&lt;IPlayer&gt; players = <span class="key">new</span> List&lt;IPlayer&gt;();
+<span class="key">for</span> (<span class="key">int</span> i = 0; i &lt; 2; ++i)
+{
+    IDeck deck = <span class="key">new</span> Deck();
+    <span class="com">// TODO: Push some cards into the deck</span>
+    players.Add(<span class="key">new</span> Player(deck));
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
+            <h3 id="game">2.5 Game</h3>
+            <p>
+                Finally, we can create and start a game involving those players:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>IGame game = <span class="key">new</span> Game(players);
+game.StartGame(initialHandSize: 1, initialPlayerLife: 2);</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p>
+                By calling the <code>StartGame</code> method, every player receives the given number
+                (<code>initialHandSize</code>) of cards from their deck to their hand. Each player starts
+                with <code>initialPlayerLife</code> life points. At this point the game is on and the first
+                turn has started. The (randomly chosen) active player (<code>game.ActivePlayer</code>) may now
+                perform a set of actions that will be discussed later on. The turns ends with a call to
+                <code>game.NextTurn()</code>.
+            </p>
+
+            <h3 id="mechanics">2.6 Mechanics</h3>
+            <p>
+                During a turn the players may use their resources to perform following actions:
+            </p>
+
+            <h4>Summon a monster</h4>
+            <p>
+                The active player spends the monster card's mana costs and transfers it from his/her hand to
+                the board (onto the specified slot):
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>IPlayer activePlayer = game.ActivePlayer;
+Console.WriteLine(<span class="str">"Active player's mana = "</span> + activePlayer.ManaValue);
+IMonsterCard goblin = (IMonsterCard)activePlayer.Hand[0];
+<span class="key">if</span>(goblin.IsSummonable(game))
+{
+    activePlayer.CastMonster(game, goblin, 0);
+    Console.WriteLine(<span class="str">"Active player's mana = "</span> + activePlayer.ManaValue);
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
+            <h4>Cast a spell</h4>
+            <p>
+                The active player spends the spell card's mana costs, the card's effects are played and the
+                card moves to the graveyard. Since we have not discussed spell cards in detail at this point
+                in the tutorial, we will just leave the following snippet here for demonstration purpose and
+                come back to it later:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>ISpellCard spell = (ISpellCard)activePlayer.Hand[1];
+<span class="key">if</span>(spell.IsCastable(game))
+{
+    <span class="key">if</span>(spell <span class="key">is</span> ITargetlessSpellCard targetlessSpell)
+    {
+        activePlayer.CastSpell(game, targetlessSpell);
+    }
+    <span class="key">else</span> <span class="key">if</span> (spell <span class="key">is</span> ITargetfulSpellCard targetfulSpell)
+    {
+        activePlayer.CastSpell(game, targetfulSpell, goblin);
+    }
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
+            <h4>Attack</h4>
+            <p>
+                If the active player possesses a monster on his/her board that has not been summoned in this turn
+                and not attacked yet in this turn, then this monster may attack an opposing player or a
+                monster on an opponent's board. Attacking a player reduces this player's life by the attack points
+                of the attacking monster. Attacking another monster reduces both monsters' lifes by the other monster's
+                attack points.
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code><span class="key">if</span>(goblin.IsReadyToAttack)
+{
+    goblin.Attack(game, game.NonActivePlayers[0]);
+    <span class="com">// OR</span>
+    goblin.Attack(game, anotherGoblin);
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
         </div>
     </div>
 </section>
