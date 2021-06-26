@@ -386,6 +386,46 @@ IMonsterCard goblin = (IMonsterCard)activePlayer.Hand[0];
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
             <h2>4. FAQ</h2>
+
+            <h3>When should I use card components to assemble cards?</h3>
+
+            <p>
+                As often as possible. You can of course change the card's mana costs (ManaValue) or reactions (AddReaction/RemoveReaction) directly, but this might lead to unexpected side effects. It is good practice to always add/remove IReactions/ IStats as components.
+            </p>
+
+            <h3>How to properly execute multiple actions?</h3>
+
+            <p>
+                Apparently there are two ways to execute multiple IActions:
+            </p>
+
+            <ol>
+                <li>Call Game.Execute(IAction) multiple times. At each call the IAction itself plus all triggered IReactions are executed if not forbidden by IAction.IsExecutable. Note that also the triggered IReactions could in turn trigger further IReactions.</li>
+                <li>Call Game.Execute(List&#60;IAction>) with all IActions. Now all IActions in the list will be executed first (if not forbidden by IAction.IsExecutable). Only after that has happened, all IReactions triggered by all those IActions will be executed. This goes on until no IReactions have been triggered anymore.</li>
+            </ol>
+
+            <p>
+                So there is definitely a difference between both approaches. Consider e.g. a fight between two monster cards, where you want both monsters to lower each others life stats 'simultaneously'. If you pick the first approach, the first monster to attack would maybe kill the second monster and - as reaction - send it to the graveyard. Now the attack from the second monster could not take place anymore and the first monster leaves the fight unharmed. In this case you should definitely go with the second approach, which would modify the life stats of both monsters first, before sending them to the graveyard.
+            </p>
+
+            <h3>How can I implement a custom spell card?</h3>
+
+            <p>
+                You can either inherit from TargetfulSpellCard or TargetlessSpellCard based on whether your card should feature ISpellCardComponent that require a target to be selected (ITargetful) or not (ITargetless). If at least one component requires a target you have to inherit from TargetfulSpellCard.
+            </p>
+
+            <h3>How can I implement a custom spell card component?</h3>
+
+            <p>
+                You can either inherit from TargetfulSpellCardComponent or TargetlessSpellCardComponent based on whether your component requires a target to be selected (ITargetful) or not (ITargetless).
+            </p>
+
+            <ul>
+                <li style="list-style-type: none"><b>TargetlessSpellCardComponent:</b> Override the GetActions to return the IActions to be performed once the corresponding spell card is played.</li>
+                <li style="list-style-type: none"><b>TargetfulSpellCardComponent:</b> Override the GetActions to return the IActions to be performed once the corresponding spell card is played. Also override the GetPotentialTargets method to provide a list of valid targets based on a given game state.</li>
+            </ul>
+
+
             <p></p>
         </div>
     </div>
