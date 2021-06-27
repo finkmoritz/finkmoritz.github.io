@@ -95,14 +95,17 @@
             <p>
                 <a href="#prerequisites">0. Prerequisites</a><br>
                 <a href="#setup">1. Setup</a><br>
-                <a href="#framework">2. Framework</a><br>
+                <a href="#basics">2. The Basics</a><br>
                 <small><a href="#gamestructure">2.1 Game Structure</a></small><br>
                 <small><a href="#cards">2.2 Cards</a></small><br>
                 <small><a href="#decks">2.3 Card Collections</a></small><br>
                 <small><a href="#players">2.4 Players</a></small><br>
                 <small><a href="#game">2.5 Game</a></small><br>
-                <small><a href="#mechanics">2.6 Mechanics</a></small><br>
-                <a href="#customobjects">3. Custom Objects</a><br>
+                <a href="#advancedconcepts">3. Advanced Concepts</a><br>
+                <small><a href="#components">3.1 Card Components</a></small><br>
+                <small><a href="#actionsandevents">3.2 Actions & Events</a></small><br>
+                <small><a href="#effects">3.3 Effects</a></small><br>
+                <small><a href="#demo">3.4 Demo Project</a></small><br>
                 <a href="#faq">4. FAQ</a><br>
             </p>
         </div>
@@ -145,10 +148,10 @@
     </div>
 </section>
 
-<section id="framework" class="container content-section text-center">
+<section id="basics" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h2>2. Framework</h2>
+            <h2>2. The Basics</h2>
             <p>Before we are actually implementing our first class with the CSBCGF, we should get a quick
             overview on the framework's basic game structure and mechanics.
             </p>
@@ -299,7 +302,6 @@ game.StartGame(initialHandSize: 1, initialPlayerLife: 2);</code></pre>
                 <code>game.NextTurn()</code>.
             </p>
 
-            <h3 id="mechanics">2.6 Mechanics</h3>
             <p>
                 During a turn the players may use their resources to perform following actions:
             </p>
@@ -368,14 +370,213 @@ IMonsterCard goblin = (IMonsterCard)activePlayer.Hand[0];
 
             <p></p>
 
+            <p>
+                During the game you may want to check if a certain player is still alive:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>Console.WriteLine(<span class="str">"First player is still alive: "</span> + game.Players[0].IsAlive);</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
         </div>
     </div>
 </section>
 
-<section id="customobjects" class="container content-section text-center">
+<section id="advancedconcepts" class="container content-section text-center">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <h2>3. Custom Objects</h2>
+            <h2>3. Advanced Concepts</h2>
+            <p>
+                This section provides a more detailed view on some of the concepts of the CSBCGF
+                which not only serve to gain insights on how the framework works internally, but
+                also may be used to customize a game according to the developer's specifications.
+            </p>
+
+            <h3 id="components">3.1 Card Components</h3>
+            <p>
+                One of CSBCGF's benefits is that it treats cards as compounds made up of smaller parts,
+                the so called card components. A card can thus dynamically be modified by adding or
+                removing certain components.
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code>Console.WriteLine(<span class="str">"Goblin's life = "</span> + goblin.LifeValue); <span class="com">// 1</span>
+ICardComponent extraLifeComponent = <span class="key">new</span> MonsterCardComponent(0, 0, 1);
+goblin.Components.Add(extraLifeComponent);
+Console.WriteLine(<span class="str">"Goblin's life = "</span> + goblin.LifeValue); <span class="com">// 2</span>
+goblin.Components.Remove(extraLifeComponent);
+Console.WriteLine(<span class="str">"Goblin's life = "</span> + goblin.LifeValue); <span class="com">// 1</span></code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p>
+                In this example we have effectively just increased / decreased the monster's life points,
+                but you could also modify mana and attack points, or even add / remove effects as
+                components.
+            </p>
+
+            <p></p>
+
+            <h3 id="actionsandevents">3.2 Actions & Events</h3>
+            <p>
+                Every modification of the game's state should only be performed using <code>IAction</code>s.
+                More specifically only via <code>Game.Execute</code> method. This method takes one or more
+                actions, adds them to the queue and executes them one by one. <code>IReaction</code>s triggered
+                by those <code>IAction</code>s are being executed afterwards (and may in turn trigger further
+                reactions). A simple action that is already implemented in the CSBCGF is the
+                <code>AddCardToBoardAction</code>:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code><span class="key">public</span> <span class="key">class</span> AddCardToBoardAction : Action
+{
+    <span class="key">public</span> <span class="key">readonly</span> IBoard Board;
+    <span class="key">public</span> ICard Card;
+    <span class="key">public</span> <span class="key">int</span> BoardIndex;
+
+    <span class="key">public</span> AddCardToBoardAction(IBoard board, ICard card, <span class="key">int</span> boardIndex, <span class="key">bool</span> isAborted = <span class="key">false</span>)
+            : <span class="key">base</span>(isAborted)
+    {
+        Board = board;
+        Card = card;
+        BoardIndex = boardIndex;
+    }
+
+    <span class="key">public</span> <span class="key">override</span> <span class="key">object</span> Clone(){...}
+
+    <span class="key">public</span> <span class="key">override</span> <span class="key">void</span> Execute(IGame game)
+    {
+        Board.AddAt(BoardIndex, Card);
+    }
+
+    <span class="key">public</span> <span class="key">override</span> <span class="key">bool</span> IsExecutable(IGameState gameState)
+    {
+        <span class="key">return</span> Card != <span class="key">null</span> && Board.IsFreeSlot(BoardIndex);
+    }
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p>
+                So this action just adds a card to the player's board, but by overriding the
+                <code>IsExecutable</code> method, we can tell the framework if it even makes
+                sense to execute it (e.g. if the board slot has been occupied by another card
+                right before this action is executed, you cannot add the card anymore and thus
+                you do not want the action to be executed).
+            </p>
+
+            <p>
+                <code>IReaction</code>s are quite similar, but they only provide one method
+                to be overridden to execute code right before or after an action is executed.
+                Take for example the <code>DrawCardOnStartOfTurnEventReaction</code>:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code><span class="key">public</span> <span class="key">class</span> DrawCardOnStartOfTurnEventReaction : Reaction
+{
+    <span class="key">public</span> <span class="key">override</span> <span class="key">object</span> Clone(){...}
+
+    <span class="key">public</span> <span class="key">override</span> <span class="key">void</span> ReactTo(IGame game, IActionEvent actionEvent)
+    {
+        <span class="key">if</span> (actionEvent.IsAfter(<span class="key">typeof</span>(StartOfTurnEvent)))
+        {
+            game.Execute(<span class="key">new</span> DrawCardAction(game.ActivePlayer));
+        }
+    }
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p>
+                Note that also here we do not alter the game state in any other way than calling
+                <code>game.Execute</code> with an action. Also we react to a
+                <code>StartOfTurnEvent</code> which is a built-in <code>Event</code>. Events are
+                simple markers without any implementation that are triggered at certain points
+                so that reactions may be triggered. The built-in events are StartOfGameEvent,
+                EndOfGameEvent, StartOfTurnEvent and EndOfTurnEvent.
+            </p>
+
+            <p></p>
+
+            <h3 id="effects">3.3 Effects</h3>
+            <p>
+                Using all that we covered in this tutorial, we are now able to implement a
+                spell card that deals a defined amount of damage to a target character:
+            </p>
+
+            <!-- ########## C# code snippet START ########## -->
+            <pre class="cscode"><code><span class="key">public</span> <span class="key">class</span> DamageSpellCard : TargetfulSpellCard
+{
+    <span class="key">protected</span> <span class="key">uint</span> damage;
+
+    <span class="key">public</span> DamageSpellCard(<span class="key">uint</span> damage)
+        : <span class="key">this</span>(damage, <span class="key">new</span> List&lt;ICardComponent&gt;(), <span class="key">new</span> List&lt;IReaction&gt;())
+    {
+        Components.Add(<span class="key">new</span> DamageSpellCardComponent((<span class="key">int</span>)damage, damage));
+    }
+
+    <span class="key">protected</span> DamageSpellCard(
+        <span class="key">uint</span> damage,
+        List&lt;ICardComponent&gt; components,
+        List&lt;IReaction&gt; reactions
+        ) : <span class="key">base</span>(components, reactions)
+    {
+        <span class="key">this</span>.damage = damage;
+    }
+
+    <span class="key">public</span> <span class="key">override</span> <span class="key">object</span> Clone(){...}
+
+    <span class="key">public</span> <span class="key">class</span> DamageSpellCardComponent : TargetfulSpellCardComponent
+    {
+        <span class="key">private</span> <span class="key">readonly</span> <span class="key">uint</span> damage;
+
+        <span class="key">public</span> DamageSpellCardComponent(<span class="key">int</span> mana, <span class="key">uint</span> damage)
+            : <span class="key">this</span>(damage, <span class="key">new</span> ManaCostStat(mana, mana), <span class="key">new</span> List&lt;IReaction&gt;())
+        {
+        }
+
+        <span class="key">public</span> DamageSpellCardComponent(
+            <span class="key">uint</span> damage,
+            ManaCostStat manaCostStat,
+            List&lt;IReaction&gt; reactions
+            ) : <span class="key">base</span>(manaCostStat, reactions)
+        {
+            <span class="key">this</span>.damage = damage;
+        }
+
+        <span class="key">public</span> <span class="key">override</span> <span class="key">void</span> Cast(IGame game, ICharacter target)
+        {
+            game.Execute(<span class="key">new</span> ModifyLifeStatAction(target, -(<span class="key">int</span>)damage));
+        }
+
+        <span class="key">public</span> <span class="key">override</span> HashSet&lt;ICharacter&gt; GetPotentialTargets(IGameState gameState)
+        {
+            HashSet&lt;ICharacter&gt; targets = <span class="key">new</span> HashSet&lt;ICharacter&gt;();
+            <span class="key">foreach</span> (IPlayer player <span class="key">in</span> gameState.Players)
+            {
+                targets.Add(player);
+                player.Board.AllCards.ForEach(c =&gt; targets.Add((ICharacter)c));
+            }
+            <span class="key">return</span> targets;
+        }
+
+        <span class="key">public</span> <span class="key">override</span> <span class="key">object</span> Clone(){...}
+    }
+}</code></pre>
+            <!-- ########## C# code snippet END ########## -->
+
+            <p></p>
+
+            <h3 id="demo">3.4 Demo Project</h3>
+            <p>
+                Have a look at the
+                <a href="https://github.com/finkmoritz/csbcgf/tree/main/csbcgfdemo">demo project</a>
+                to view and play a simple battle card game console application implemented with the CSBCGF.
+                You can find further information in the
+                <a href="https://github.com/finkmoritz/csbcgf/blob/main/readme.md">readme</a>.
+                Additionally, the code for this tutorial is also on
+                <a href="https://github.com/finkmoritz/csbcgf/tree/main/csbcgftutorial">Github</a>.
+            </p>
+
             <p></p>
 
         </div>
