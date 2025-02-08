@@ -141,13 +141,17 @@ function main() {
     });
 
     /*====================================
-    Insert my age
+    Insert placeholders
     ======================================*/
     $(document).ready(function() {
+        // myAge
         const ageDifMs = Date.now() - Date.UTC(1992, 5, 30);
         const ageDate = new Date(ageDifMs); // miliseconds from epoch
         const myAge = Math.abs(ageDate.getUTCFullYear() - 1970);
         $("#myAge").html(myAge);
+
+        // currentYear
+        $("#currentYear").html(new Date().getFullYear());
     });
 
 }());
