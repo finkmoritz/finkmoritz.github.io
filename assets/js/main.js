@@ -226,4 +226,20 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
+    /**
+     * Placeholders
+     */
+    const today = new Date();
+
+    const birth = new Date("1992-06-30");
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--; // Noch nicht Geburtstag gehabt dieses Jahr
+    }
+    document.getElementById("ageYears").textContent = age;
+
+    const careerStartYear = 2017;
+    document.getElementById("careerYears").textContent = today.getFullYear() - careerStartYear;
+
 })();
