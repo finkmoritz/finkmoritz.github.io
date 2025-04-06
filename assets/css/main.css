@@ -87,6 +87,11 @@ h6 {
   font-family: var(--heading-font);
 }
 
+.text-sized-svg {
+    height: 1em;
+    vertical-align: text-bottom;
+}
+
 /* PHP Email Form Messages
 ------------------------------*/
 .php-email-form .error-message {
